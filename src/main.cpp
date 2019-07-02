@@ -3,37 +3,37 @@
 #include <stdio.h>
 #include <cpr/cpr.h>
 #include <map>
+#include <list>
 #include <cpr/curlholder.h>
 
 
-using namespace std;
+int mypost(std::string url, std::map<std::string,std::string> data){
+    auto payload = cpr::Payload(data);
+    auto response = cpr::Post(url, payload);
 
-int mypost(string url, std::map<std::string,std::string> data){
-
-    return 0;
+    return response.status_code;
 
 }
 
 int myget(std::string url){
     auto urlObject = cpr::Url(url);
     auto r = cpr::Get(urlObject);
-    cout << r.text << endl;
+    std::cout << r.text << std::endl;
 
     return r.status_code;
 }
 
 int main() {
-    std::string url;
+    std::string url, post_url;
 
     url = "http://www.example.net";
-    std::map<std::string, std::string> data;
+    post_url = "http://0.0.0.0:9000/";
 
-    data["user"] = "test";
-    data["password"] = "test111";
+    std::pair<std::string, std::string>& data{"user", "test"};
 
-    int ger_result = myget(url);
-    int post_result = mypost(url, data);
+    int get_result = myget(url);
+    int post_result = mypost(post_url, data);
 
-    cout << "Hello, World!" << endl;
+    std::cout << "GET status-code: " << get_result << ".\n" << std::endl;
     return 0;
 }
