@@ -1,0 +1,4 @@
+/home/nn5h/CLionProjects/undetected/tmp/CMakeFiles/rebuild_cache.dir
+/home/nn5h/CLionProjects/undetected/tmp/CMakeFiles/edit_cache.dir
+/home/nn5h/CLionProjects/undetected/tmp/CMakeFiles/main.dir
+/home/nn5h/CLionProjects/undetected/tmp/CMakeFiles/cpr_lib.dir
