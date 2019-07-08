@@ -15,16 +15,15 @@ int main()
     int ids[5] = {15, 3, 1, 10, 25};
     int grad_dates[5] = {2019, 2020, 2017, 2020, 2016};
 
-    for (int i = 0; i < 5; i++){
-        printStudentInfo(i+1, names[i], ids[i], grad_dates[i]);
-    }
     //ToDo sort the students by name, then by number, then by gradDate
-    cout << "__________________________________________________________________\n";
-    sortByID(names, ids, grad_dates);
-    sortByGradDate(names, ids, grad_dates);
+
+    printStudentsInfo(names, ids, grad_dates);
     sortByName(names, ids, grad_dates);
-    for (int i = 0; i < 5; i++){
-        printStudentInfo(i+1, names[i], ids[i], grad_dates[i]);
-    }
+    printStudentsInfo(names, ids, grad_dates);
+    sortByID(names, ids, grad_dates);
+    printStudentsInfo(names, ids, grad_dates);
+    sortByGradDate(names, ids, grad_dates);
+    printStudentsInfo(names, ids, grad_dates);
+
     return 0;
 }
