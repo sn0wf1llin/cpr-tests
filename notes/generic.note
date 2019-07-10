@@ -1,0 +1,68 @@
+# Note about Generic Classes & templates usage
+
+template <typename T-some-name-here> function-1(T-some-name-here, T-some-name-here);
+
+T-some-name-here function-1(T-some-name-here var1, T-some-name-here var2){
+  ... do something here ...
+  T-some-name-here var3 = ...
+
+  return var3;
+}
+
+// Shows that class uses templates mechanism
+// Can be several classes also
+/*
+  template <class T, class V, class U ... >
+  When declare a function this long line MUST be
+  set before any such new function
+  Looks like:
+
+    template <class T, class V, class U, ... >
+    void ClassName<T, V, U>::methodName(T var1, V var2, V var3, U var4 ... ){
+      ...
+    }
+*/
+
+template <class T>
+class Test() {
+  T param1;
+  T param2;
+
+  public:
+    Test();
+    Test(T p1, T p2);
+    ~Test();
+    void method-1(T var1);
+    T method-2();
+};
+
+template<class T>
+Test<T>::Test(){
+  param1 = 0;
+  param2 = 0;
+}
+
+template<class T>
+Test<T>::Test(T p1, T p2){
+  param1 = p1;
+  param2 = p2;
+}
+
+template<class T>
+Test<T>::~Test() {
+  cout << "... cleaning ... " << endl;
+}
+
+template<class T>
+void Test<T>::method-1(T var1){
+  ... do something here ...
+}
+
+template<class T>
+T Test<T>::method-2(){
+  ... do something here ...
+  T var3;
+  ... do something here ...
+
+  return var3;
+}
