@@ -5,10 +5,7 @@
 #ifndef UNDETECTED_COLLECTSYSTEMDATA_H
 #define UNDETECTED_COLLECTSYSTEMDATA_H
 
-#include "CollectSystemData.h"
-#include <pair>
-
-using namespace std;
+#include <map>
 
 class SystemDataCollector {
     std::string computerName;
@@ -22,7 +19,7 @@ public:
     ~SystemDataCollector();
     std::string getIP();
     std::string getComputerName();
-    std::map getHWInfo();
+    std::map<std::string, std::string> getHWInfo();
     void updateIP();
     void updateHWInfo();
 

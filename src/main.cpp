@@ -1,8 +1,8 @@
 #include <iostream>
-#include "string"
-#include <stdio.h>
+#include <string>
 #include "NetworkOperations.h"
-
+#include "CollectSystemData.h"
+#include "Helper.h"
 
 
 int main() {
@@ -11,7 +11,9 @@ int main() {
     url = "http://www.example.net";
     post_url = "http://0.0.0.0:9000/";
 
-    std::pair<std::string, std::string>& data{"user", "test"};
+    std::map<std::string, std::string> data;
+    data.insert(std::pair<std::string, std::string>("user", "test"));
+//    printDataMap(data);
 
     int get_result = myget(url);
     int post_result = mypost(post_url, data);
