@@ -11,6 +11,6 @@
 #include <cpr/curlholder.h>
 
 int mypost(std::string url, std::map<std::string, std::string> data);
-int myget(std::string url);
+cpr::Response myget(std::string url);
 
 #endif //UNDETECTED_NETWORKOPERATIONS_H

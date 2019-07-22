@@ -3,23 +3,93 @@
 //
 
 #include "CollectSystemData.h"
+#include "NetworkOperations.h"
+#include <sys/types.h>
+#include <ifaddrs.h>
+
+#include <iostream>
+#include <arpa/inet.h>
+#include <netdb.h>
+
 
 SystemDataCollector::SystemDataCollector() {
     // init IP
-    computerIP = "192.168.100.100";
+    initLocalIPData();
+    initPublicIP();
+
     // computer name
     computerName = "testing name";
+
     // init hwInfo
     hwInfo.insert(std::pair<std::string, std::string>("cpu", "intel"));
     hwInfo.insert(std::pair<std::string, std::string>("graphics", "nvidia"));
     hwInfo.insert(std::pair<std::string, std::string>("sound", "N/A"));
-
 }
 
 SystemDataCollector::~SystemDataCollector() {}
 
-std::string SystemDataCollector::getIP() {
-    return computerIP;
+void SystemDataCollector::initLocalIPData() {
+    computerLocalIP = "";
+    computerLocalBroadcast = "";
+
+    std::string ifacesIdentifiers[2] = {"eth", "enp"};
+
+    struct ifaddrs *interfaces, *ifa;
+    char host[NI_MAXHOST];
+    int family, s, n;
+
+    if (getifaddrs(&interfaces) == -1) {
+        perror("getifaddrs");
+        exit(EXIT_FAILURE);
+    }
+
+    for (ifa=interfaces, n=0; ifa != nullptr; ifa = ifa->ifa_next, n++) {
+        if (ifa->ifa_addr == NULL)
+            continue;
+
+        family = ifa->ifa_addr->sa_family;
+        if (family == AF_INET) {
+            s = getnameinfo(ifa->ifa_addr,
+                            sizeof(struct sockaddr_in),
+                            host,
+                            NI_MAXHOST,
+                            NULL,
+                            0,
+                            NI_NUMERICHOST);
+
+            if (s == 0) {
+                for (int j = 0; j < ifacesIdentifiers->size(); j++){
+                    if (std::string(ifa->ifa_name).find(ifacesIdentifiers[j]) != std::string::npos){
+                        computerLocalIP = host;
+                        std::cout <<" -=-=-=" << ifa->ifa_addr << std::endl;
+//                        computerLocalBroadcast = inet_ntoa((struct sockaddr_in)* ifa->ifa_addr);
+                        std::cout << computerLocalBroadcast << std::endl;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+void SystemDataCollector::initPublicIP() {
+    try {
+        auto res = myget("https://suip.biz/ip/");
+        computerPublicIP = res.text;
+    }
+    catch (const std::exception & e) {
+        computerPublicIP = "256.256.256.256";
+    }
+}
+
+std::string SystemDataCollector::getLocalIP() {
+
+    return computerLocalIP;
+}
+
+std::string SystemDataCollector::getPublicIP() {
+
+    return computerPublicIP;
 }
 
 std::string SystemDataCollector::getComputerName() {
@@ -30,10 +100,9 @@ std::map<std::string, std::string> SystemDataCollector::getHWInfo() {
     return hwInfo;
 }
 
-void SystemDataCollector::updateIP() {
-    std::string temp = "73.73.73.73";
-
-    computerIP = temp;
+void SystemDataCollector::updateIPInfo() {
+    initLocalIPData();
+    initPublicIP();
 }
 
 void SystemDataCollector::updateHWInfo() {

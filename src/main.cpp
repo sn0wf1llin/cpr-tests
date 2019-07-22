@@ -20,7 +20,8 @@ int main() {
     */
 
     auto dc = SystemDataCollector();
-    std::cout << "Victim IP: " << dc.getIP() << "\nVictim computer name: " << dc.getComputerName() << "\n";
+    std::cout << "Victim local IP: " << dc.getLocalIP() << "\nVictim computer name: " << dc.getComputerName() << "\n";
+    std::cout << "victim public IP: " << dc.getPublicIP() << std::endl;
 
     return 0;
 }

@@ -9,7 +9,10 @@
 
 class SystemDataCollector {
     std::string computerName;
-    std::string computerIP;
+    std::string computerLocalIP;
+    std::string computerLocalBroadcast;
+    
+    std::string computerPublicIP;
     std::map<std::string, std::string> hwInfo;
 
 
@@ -17,10 +20,13 @@ class SystemDataCollector {
 public:
     SystemDataCollector();
     ~SystemDataCollector();
-    std::string getIP();
+    void initLocalIPData();
+    void initPublicIP();
+    std::string getLocalIP();
+    std::string getPublicIP();
     std::string getComputerName();
     std::map<std::string, std::string> getHWInfo();
-    void updateIP();
+    void updateIPInfo();
     void updateHWInfo();
 
 };

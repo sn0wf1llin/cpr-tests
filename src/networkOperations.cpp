@@ -18,10 +18,9 @@ int mypost(std::string url, std::map<std::string, std::string> data) {
 
 }
 
-int myget(std::string url) {
+cpr::Response myget(std::string url) {
     auto urlObject = cpr::Url(url);
     auto r = cpr::Get(urlObject);
-    std::cout << r.text << std::endl;
 
-    return r.status_code;
+    return r;
 }
