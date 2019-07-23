@@ -23,6 +23,7 @@ public:
     void initLocalIPData();
     void initPublicIP();
     std::string getLocalIP();
+    std::string getLocalIPBroadcast();
     std::string getPublicIP();
     std::string getComputerName();
     std::map<std::string, std::string> getHWInfo();

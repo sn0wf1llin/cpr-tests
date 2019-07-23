@@ -61,9 +61,7 @@ void SystemDataCollector::initLocalIPData() {
                 for (int j = 0; j < ifacesIdentifiers->size(); j++){
                     if (std::string(ifa->ifa_name).find(ifacesIdentifiers[j]) != std::string::npos){
                         computerLocalIP = host;
-                        std::cout <<" -=-=-=" << ifa->ifa_addr << std::endl;
-//                        computerLocalBroadcast = inet_ntoa((struct sockaddr_in)* ifa->ifa_addr);
-                        std::cout << computerLocalBroadcast << std::endl;
+                        computerLocalBroadcast = inet_ntoa(((struct sockaddr_in *) ifa->ifa_netmask)->sin_addr);
                     }
                 }
             }
@@ -85,6 +83,11 @@ void SystemDataCollector::initPublicIP() {
 std::string SystemDataCollector::getLocalIP() {
 
     return computerLocalIP;
+}
+
+std::string SystemDataCollector::getLocalIPBroadcast() {
+
+    return computerLocalBroadcast;
 }
 
 std::string SystemDataCollector::getPublicIP() {

