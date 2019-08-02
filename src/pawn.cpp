@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include "Pawn.h"
+#include <tlhelp32.h>
+
 
 
 int Pawn::sendMyselfData() {
@@ -16,7 +18,7 @@ int Pawn::sendMyselfData() {
 
 int Pawn::needReborn() {
     /* TEMPORARY
-     * listen local conn & port
+     * looking for parent
      * if it is, don't create clones */
 
     std::string url = "localhost:65501";
@@ -42,6 +44,15 @@ int Pawn::readPidFile(std::string fname) {
 
 }
 
+void born() {
+    std::string url = "localhost:65501";
+    auto resp = myget(url);
+
+    if (resp.status_code == 200) {
+        return 0;
+    } else return 1;
+}
+
 void Pawn::reborn() {
     if (needReborn() == 1) {
         // fork here
@@ -57,7 +68,7 @@ void Pawn::reborn() {
 }
 
 void Pawn::doWork() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100; i++) {
         std::cout << i << " step" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }

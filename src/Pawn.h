@@ -22,6 +22,7 @@ public:
     int needReborn();
     int sendMyselfData();
     int readPidFile(std::string fname);
+    void born();
     void reborn();
     void doWork();
     void pidToFile(std::string fname);

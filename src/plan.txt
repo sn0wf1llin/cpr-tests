@@ -1,4 +1,8 @@
-parent start -> create PID file -> do work -> fork & get child PID -> daemon & monitor child *
+parent start -> fork, do-work
+
+
+
+create PID file -> do work -> fork & get child PID -> daemon & monitor child *
              -> if exists check number in it -> number = self-PID -> fork()
                                              -> number > self-PID -> (monitor for process which PID = number - [self-PID])
                                              -> else recreate PID-file & *
