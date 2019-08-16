@@ -3,7 +3,7 @@
 //
 
 #include "CollectSystemData.h"
-#include "NetworkOperations.h"
+#include "shared/NetworkOperations.h"
 #include <sys/types.h>
 #include <ifaddrs.h>
 
