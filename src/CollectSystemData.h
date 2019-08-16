@@ -13,11 +13,10 @@ class SystemDataCollector {
     std::string computerLocalBroadcast;
     
     std::string computerPublicIP;
-    std::map<std::string, std::string> hwInfo;
-
-
 
 public:
+    std::map<std::string, std::string> hwInfo;
+
     SystemDataCollector();
     ~SystemDataCollector();
     void initLocalIPData();

