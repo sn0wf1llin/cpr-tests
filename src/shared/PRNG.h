@@ -6,11 +6,13 @@
 #define UNDETECTED_PRNG_H
 
 
+#include <string>
+
 class PRNG {
 public:
     PRNG();
     ~PRNG();
-    int generate();
+    std::string generateIP(std::string lowBound, std::string highBound);
 };
 
 

