@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Pawn.h"
+#include "CC.h"
 
 
 int main() {
@@ -24,8 +25,14 @@ int main() {
 //    int need_reborn = reborn.needReborn();
 //    printf("Need reborn: %d\n", need_reborn);
 
-    auto p = Pawn();
+//    auto p = Pawn();
 //    std::cout << p.sdc.getComputerName() << " " << p.sdc.getLocalIP() << std::endl;
+    auto cc = CC();
+    std::cout << cc.getName() << " " << cc.getIP() << std::endl;
+    auto cc1 = CC("CC 1");
+    std::cout << cc1.getName() << " " << cc1.getIP() << std::endl;
+    auto cc2 = CC("100.10.10.20", "CC 2");
+    std::cout << cc2.getName() << " " << cc2.getIP() << std::endl;
 
     return 0;
 }

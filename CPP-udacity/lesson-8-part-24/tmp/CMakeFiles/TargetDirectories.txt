@@ -1,3 +1,0 @@
-/root/projects/spawn/tests/cpr-tests/CPP-udacity/lesson-8-part-24/tmp/CMakeFiles/rebuild_cache.dir
-/root/projects/spawn/tests/cpr-tests/CPP-udacity/lesson-8-part-24/tmp/CMakeFiles/main.dir
-/root/projects/spawn/tests/cpr-tests/CPP-udacity/lesson-8-part-24/tmp/CMakeFiles/edit_cache.dir

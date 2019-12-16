@@ -16,7 +16,7 @@ INCLUDE_DIRECTORIES( ${FMT_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES( ${INCLUDE_LIBS_DIR} )
 INCLUDE_DIRECTORIES( ${INCLUDE_LIBS_DIR}/cpr )
 
-ADD_EXECUTABLE( ${EXECUTABLE} main.cpp shared/networkOperations.cpp collectSystemData.cpp shared/Helper.cpp pawn.cpp shared/PRNG.cpp )
+ADD_EXECUTABLE( ${EXECUTABLE} main.cpp shared/networkOperations.cpp collectSystemData.cpp shared/Helper.cpp pawn.cpp shared/PRNG.cpp cc.cpp )
 
 LINK_LIBRARIES( curl )
 LINK_LIBRARIES( fmt )
