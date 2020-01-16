@@ -9,6 +9,9 @@
 #include <string>
 
 class PRNG {
+    // as CC can homehow spread itself => IP is not a <predictable value> in the any way
+    // so IP will generates as is, just numbers
+    // may be correct this concept when a new idea appeared
 public:
     PRNG();
     ~PRNG();

@@ -7,6 +7,7 @@
 
 
 class CC {
+    // starts apache locally + opportunity to spread .cccmd files
     std::string IP;
     std::string name;
 
